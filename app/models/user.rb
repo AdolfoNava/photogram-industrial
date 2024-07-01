@@ -30,18 +30,17 @@ class User < ApplicationRecord
   # Direct Associations
   has_many :own_photos, class_name: "Photo", foreign_key: "owner_id"
   has_many :comments, foreign_key: "author_id"
-  has_many :sent_follow_requests, foreign_key: :sender_id, class_name: "FollowRequest"
+  has_many :sent_follow_requests, foreign_key: :sender_id, class_name: "FollowRequest", dependent: :destroy
   # Special Association by filter results
   #   has_many :accepted_sent_follow_requests, -> {where(status: "accepted")}, foreign_key: :sender_id, class_name: "FollowRequest"
-  has_many :accepted_sent_follow_requests, -> {accepted}, foreign_key: :sender_id, class_name: "FollowRequest"
+  has_many :accepted_sent_follow_requests, -> {accepted}, foreign_key: :sender_id, class_name: "FollowRequest", dependent: :destroy
   # Direct Associations
-  has_many :received_follow_requests, foreign_key: :recipient_id, class_name: "FollowRequest"
+  has_many :received_follow_requests, foreign_key: :recipient_id, class_name: "FollowRequest", dependent: :destroy
   #   has_many :accepted_received_follow_requests, -> {where(status: "accepted")}, foreign_key: :recipient_id, class_name: "FollowRequest"
-  has_many :accepted_received_follow_requests, -> {accepted}, foreign_key: :recipient_id, class_name: "FollowRequest"
+  has_many :accepted_received_follow_requests, -> {accepted}, foreign_key: :recipient_id, class_name: "FollowRequest", dependent: :destroy
   has_many :likes, foreign_key: :fan_id
-  has_many :own_photos, foreign_key: :owner_id, class_name: "Photo"
   # In Direct Associations
-  has_many :liked_photos, through: :likes, source: :photo
+  has_many :liked_photos, through: :likes, source: :photo, dependent: :destroy
   has_many :leaders, through: :accepted_sent_follow_requests, source: :recipient
   has_many :followers, through: :accepted_received_follow_requests, source: :sender
   # Algorithmn of special results by feed choices
