@@ -24,4 +24,10 @@ class Photo < ApplicationRecord
   has_many :comments
   has_many :likes
   has_many :fans, through: :likes
+  validates :caption, presence: true
+  validates :image, presence: true
+  # Scopes
+  # Ex:- scope :active, -> {where(:active => true)}
+  scope :past_week, -> {where(created_at: 1.week.ago...)}
+  scope :by_likes, -> { where(:likes_count => :desc)}
 end
