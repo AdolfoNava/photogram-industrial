@@ -28,15 +28,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   # Direct Associations
-  has_many :own_photos, class_name: "Photo", foreign_key: "owner_id"
-  has_many :comments, foreign_key: "author_id"
+  has_many :own_photos, class_name: "Photo", foreign_key: "owner_id", dependent: :destroy
+  has_many :comments, foreign_key: "author_id", dependent: :destroy
   has_many :sent_follow_requests, foreign_key: :sender_id, class_name: "FollowRequest", dependent: :destroy
   # Special Association by filter results
-  #   has_many :accepted_sent_follow_requests, -> {where(status: "accepted")}, foreign_key: :sender_id, class_name: "FollowRequest"
   has_many :accepted_sent_follow_requests, -> {accepted}, foreign_key: :sender_id, class_name: "FollowRequest", dependent: :destroy
   # Direct Associations
   has_many :received_follow_requests, foreign_key: :recipient_id, class_name: "FollowRequest", dependent: :destroy
-  #   has_many :accepted_received_follow_requests, -> {where(status: "accepted")}, foreign_key: :recipient_id, class_name: "FollowRequest"
   has_many :accepted_received_follow_requests, -> {accepted}, foreign_key: :recipient_id, class_name: "FollowRequest", dependent: :destroy
   has_many :likes, foreign_key: :fan_id
   # In Direct Associations
