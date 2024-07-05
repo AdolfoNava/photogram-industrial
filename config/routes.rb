@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   get ":username/liked" => "users#liked", as: :liked
-  get ":username/feed"
+  get ":username/feed" => "users#feed", as: :feed
   get ":username/followers"
   get ":username/following"
 
